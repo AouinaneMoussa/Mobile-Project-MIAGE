@@ -1,9 +1,11 @@
+// CovidData.java
 package com.example.opendataproject;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class CovidData {
+public class CovidData implements Serializable { // Make it Serializable
 
     @SerializedName("fips")
     @Expose
@@ -26,6 +28,8 @@ public class CovidData {
     @SerializedName("location")
     @Expose
     private Location location;
+
+    // Getters and Setters
 
     public String getFips() {
         return fips;
@@ -82,6 +86,4 @@ public class CovidData {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-
 }

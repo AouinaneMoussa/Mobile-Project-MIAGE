@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenDataProject"
         tools:targetApi="31">
-
+        <activity
+            android:name=".DetailActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -28,7 +30,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBL9dEyE-SUoeF7a4Le192HJ7xdWxHP8Ls" />
+            android:value="AIzaSyDsPuSsQnUa251yr963q4N_bGNs6d8qgJc" />
 
         <activity
             android:name=".MapsActivity"
