@@ -1,6 +1,9 @@
 package com.example.opendataproject;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,24 +15,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.example.opendataproject.databinding.ActivityMapsBinding;
 import com.google.maps.android.clustering.ClusterManager;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private ActivityMapsBinding binding;
     private ClusterManager<CovidClusterItem> clusterManager;
     private List<CovidData> covidDataList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    // MapsActivity.java
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        com.example.opendataproject.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Retrieve updated covid data list
         covidDataList = getIntent().getParcelableArrayListExtra("covidDataList");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -39,26 +40,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onMapReady(@NonNull GoogleMap googleMap) {
 
         // Initialize the cluster manager
-        clusterManager = new ClusterManager<>(this, mMap);
-        mMap.setOnCameraIdleListener(clusterManager);
-        mMap.setOnMarkerClickListener(clusterManager);
+        clusterManager = new ClusterManager<>(this, googleMap);
+        googleMap.setOnCameraIdleListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
 
-        addCovidDataToMap();
+        addCovidDataToMap(); // Add all Covid data to map
 
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+        googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
-            public View getInfoWindow(Marker marker) {
+            public View getInfoWindow(@NonNull Marker marker) {
                 return null;
             }
 
             @Override
-            public View getInfoContents(Marker marker) {
-                View view = getLayoutInflater().inflate(R.layout.marker_info_window, null);
+            public View getInfoContents(@NonNull Marker marker) {
+                @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.marker_info_window, null);
                 TextView title = view.findViewById(R.id.info_title);
                 TextView snippet = view.findViewById(R.id.info_snippet);
                 title.setText(marker.getTitle());
@@ -69,12 +70,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void addCovidDataToMap() {
+        // Add markers for all Covid data entries
         for (CovidData data : covidDataList) {
             LatLng position = new LatLng(data.getLocation().getLat(), data.getLocation().getLon());
             CovidClusterItem item = new CovidClusterItem(position, data.getAdmin2(),
                     "Cases: " + data.getTotConfirmed() + ", Deaths: " + data.getTotDeath(), data);
             clusterManager.addItem(item);
         }
-        clusterManager.cluster();
+        clusterManager.cluster(); // Refresh the cluster
     }
 }
+
