@@ -41,7 +41,8 @@
                 android:layout_height="wrap_content"
                 android:text="Cases and Deaths"
                 android:textSize="16sp"
-                android:textColor="#666666" />
+                android:textColor="#666666"
+                android:maxLines="2" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

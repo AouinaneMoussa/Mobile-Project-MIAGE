@@ -1,11 +1,12 @@
-// CovidData.java
 package com.example.opendataproject;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
-public class CovidData implements Serializable { // Make it Serializable
+public class CovidData implements Parcelable {
 
     @SerializedName("fips")
     @Expose
@@ -30,7 +31,6 @@ public class CovidData implements Serializable { // Make it Serializable
     private Location location;
 
     // Getters and Setters
-
     public String getFips() {
         return fips;
     }
@@ -86,4 +86,43 @@ public class CovidData implements Serializable { // Make it Serializable
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    // Parcelable implementation
+    protected CovidData(Parcel in) {
+        fips = in.readString();
+        provinceState = in.readString();
+        admin2 = in.readString();
+        date = in.readString();
+        totDeath = in.readInt();
+        totConfirmed = in.readInt();
+        location = in.readParcelable(Location.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(fips);
+        dest.writeString(provinceState);
+        dest.writeString(admin2);
+        dest.writeString(date);
+        dest.writeInt(totDeath);
+        dest.writeInt(totConfirmed);
+        dest.writeParcelable(location, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<CovidData> CREATOR = new Creator<CovidData>() {
+        @Override
+        public CovidData createFromParcel(Parcel in) {
+            return new CovidData(in);
+        }
+
+        @Override
+        public CovidData[] newArray(int size) {
+            return new CovidData[size];
+        }
+    };
 }

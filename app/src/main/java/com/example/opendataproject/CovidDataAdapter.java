@@ -36,7 +36,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
     public void onBindViewHolder(@NonNull CovidDataViewHolder holder, int position) {
         CovidData data = covidDataList.get(position);
         holder.countyTextView.setText("County: " + data.getAdmin2());
-        holder.casesTextView.setText("Cases: " + data.getTotConfirmed());
+        holder.casesTextView.setText("Cases: " + data.getTotConfirmed() + ", Deaths: " + data.getTotDeath());
 
         // Using Picasso to load a placeholder image for demonstration
         Picasso.get().load("https://static.wikia.nocookie.net/psychology/images/c/c3/WHO_logo.gif/revision/latest?cb=20060221154725").into(holder.iconImageView);
