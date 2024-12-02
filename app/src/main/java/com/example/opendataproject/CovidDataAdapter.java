@@ -35,7 +35,10 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
     @Override
     public void onBindViewHolder(@NonNull CovidDataViewHolder holder, int position) {
         CovidData data = covidDataList.get(position);
+
+        // Bind county and state to the TextViews
         holder.countyTextView.setText("County: " + data.getAdmin2());
+        holder.stateTextView.setText("State: " + data.getProvinceState()); // Adding the state information
         holder.casesTextView.setText("Cases: " + data.getTotConfirmed() + ", Deaths: " + data.getTotDeath());
 
         // Using Picasso to load a placeholder image for demonstration
@@ -62,12 +65,13 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
     }
 
     public static class CovidDataViewHolder extends RecyclerView.ViewHolder {
-        TextView countyTextView, casesTextView;
+        TextView countyTextView, stateTextView, casesTextView;
         ImageView iconImageView;
 
         public CovidDataViewHolder(@NonNull View itemView) {
             super(itemView);
             countyTextView = itemView.findViewById(R.id.county_name);
+            stateTextView = itemView.findViewById(R.id.state_name); // New TextView for the state
             casesTextView = itemView.findViewById(R.id.covid_data);
             iconImageView = itemView.findViewById(R.id.icon);
         }

@@ -80,4 +80,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         clusterManager.cluster(); // Refresh the cluster
     }
 }
-
