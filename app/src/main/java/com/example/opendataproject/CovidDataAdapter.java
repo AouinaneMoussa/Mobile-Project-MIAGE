@@ -42,7 +42,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
         holder.casesTextView.setText("Cases: " + data.getTotConfirmed() + ", Deaths: " + data.getTotDeath());
 
         // Using Picasso to load a placeholder image for demonstration
-        Picasso.get().load("https://static.wikia.nocookie.net/psychology/images/c/c3/WHO_logo.gif/revision/latest?cb=20060221154725").into(holder.iconImageView);
+        Picasso.get().load("https://mlyoasgpptk8.i.optimole.com/cb:PSMF~43db5/w:auto/h:auto/q:mauto/f:avif/https://www.iris-france.org/wp-content/uploads/2021/02/Coronavirus-monde-scaled.jpg").into(holder.iconImageView);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
@@ -54,7 +54,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
             intent.putExtra("deaths", data.getTotDeath());
             intent.putExtra("latitude", data.getLocation().getLat());
             intent.putExtra("longitude", data.getLocation().getLon());
-            intent.putExtra("image_url", "https://static.wikia.nocookie.net/psychology/images/c/c3/WHO_logo.gif/revision/latest?cb=20060221154725"); // Replace with actual image URL
+            intent.putExtra("image_url", "https://mlyoasgpptk8.i.optimole.com/cb:PSMF~43db5/w:auto/h:auto/q:mauto/f:avif/https://www.iris-france.org/wp-content/uploads/2021/02/Coronavirus-monde-scaled.jpg"); //image URL
             context.startActivity(intent);
         });
     }
@@ -71,7 +71,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
         public CovidDataViewHolder(@NonNull View itemView) {
             super(itemView);
             countyTextView = itemView.findViewById(R.id.county_name);
-            stateTextView = itemView.findViewById(R.id.state_name); // New TextView for the state
+            stateTextView = itemView.findViewById(R.id.state_name);
             casesTextView = itemView.findViewById(R.id.covid_data);
             iconImageView = itemView.findViewById(R.id.icon);
         }

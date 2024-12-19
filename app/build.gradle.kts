@@ -54,5 +54,8 @@ dependencies {
 
     implementation ("com.google.maps.android:android-maps-utils:2.3.0")
 
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    implementation("com.airbnb.android:lottie:6.3.0")
 
 }
