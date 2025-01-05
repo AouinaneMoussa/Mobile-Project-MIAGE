@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Open Data Project</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <string-array name="theme_colors">
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Green</item>
+    </string-array>
+    <string-array name="theme_colors_values">
+        <item>blue</item>
+        <item>red</item>
+        <item>green</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -58,4 +58,14 @@ dependencies {
 
     implementation("com.airbnb.android:lottie:6.3.0")
 
+    implementation ("androidx.preference:preference:1.2.1")
+
+    implementation ("com.google.android.material:material:1.8.0")
+    implementation ("com.google.android.material:material:1.3.0-alpha03")
+    implementation ("com.google.maps.android:android-maps-utils:2.2.0")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+
+
+
 }

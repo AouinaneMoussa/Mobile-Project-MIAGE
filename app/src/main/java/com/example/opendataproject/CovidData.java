@@ -2,6 +2,7 @@ package com.example.opendataproject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.gson.Gson;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -96,6 +97,11 @@ public class CovidData implements Parcelable {
         totDeath = in.readInt();
         totConfirmed = in.readInt();
         location = in.readParcelable(Location.class.getClassLoader());
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
     @Override

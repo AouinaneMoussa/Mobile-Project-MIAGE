@@ -1,6 +1,7 @@
 package com.example.opendataproject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,15 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,12 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String BASE_URL = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/";
     private static final int LIMIT = 20;
-
     private Spinner provinceSpinner;
     private RecyclerView covidDataRecyclerView;
     private Button viewMapButton;
     private CovidDataAdapter covidDataAdapter;
     private List<CovidData> covidDataList = new ArrayList<>();
+    private Set<String> favoriteFipsSet = new HashSet<>(); // To store favorite items' FIPS codes
     private String selectedProvince = "All Provinces"; // Default to "All Provinces"
     private boolean isLoading = false;
 
@@ -44,24 +45,46 @@ public class MainActivity extends AppCompatActivity {
         covidDataRecyclerView = findViewById(R.id.covid_data_recycler_view);
         viewMapButton = findViewById(R.id.view_map_button);
 
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.bottom_home) {
+                return true;
+            } else if (id == R.id.bottom_favorites) {
+                saveFavorites(); // Assurez-vous que les favoris actuels sont sauvegardés
+                startActivity(new Intent(getApplicationContext(), FavoritesActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_map) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putParcelableArrayListExtra("covidDataList", new ArrayList<>(covidDataList));
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            }
+            return false;
+        });
+
+
         // Setup RecyclerView
-        covidDataAdapter = new CovidDataAdapter(this, covidDataList);
+        covidDataAdapter = new CovidDataAdapter(this, covidDataList, favoriteFipsSet, this::saveFavorites);
         covidDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         covidDataRecyclerView.setAdapter(covidDataAdapter);
 
         // Setup Spinner
         configureProvinceSpinner();
 
-        // Setup Button
-        // Start MapsActivity to display the data on the map
-        findViewById(R.id.view_map_button).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-            intent.putParcelableArrayListExtra("covidDataList", new ArrayList<>(covidDataList));
-            startActivity(intent);
-        });
-
-        // Load initial data (showing all provinces)
-        fetchCovidData();
+        // Restore state if available
+        if (savedInstanceState != null) {
+            covidDataList = savedInstanceState.getParcelableArrayList("covidDataList");
+            covidDataAdapter.notifyDataSetChanged();
+        } else {
+            // Load initial data (default to "All Provinces")
+            fetchCovidData();
+        }
 
         // Set up infinite scroll (pagination)
         covidDataRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -131,5 +154,23 @@ public class MainActivity extends AppCompatActivity {
                 isLoading = false;
             }
         });
+    }
+
+    private void saveFavorites() {
+        getSharedPreferences("favorites", MODE_PRIVATE)
+                .edit()
+                .putStringSet("favorites", favoriteFipsSet)
+                .apply();
+    }
+
+    /*private void saveFavorites(){
+        SharedPreferences sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+    }*/
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("covidDataList", new ArrayList<>(covidDataList));
     }
 }
