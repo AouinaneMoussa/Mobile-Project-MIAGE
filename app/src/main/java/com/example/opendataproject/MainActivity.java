@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -53,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.bottom_home) {
                 return true;
             } else if (id == R.id.bottom_favorites) {
-                saveFavorites(); // Assurez-vous que les favoris actuels sont sauvegardés
-                startActivity(new Intent(getApplicationContext(), FavoritesActivity.class));
+                Intent intent = new Intent(MainActivity.this, FavoritesActivity.class);
+                intent.putExtra("covidDataList", (Serializable) covidDataList); // Transmettre la liste
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
                 return true;
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Setup RecyclerView
-        covidDataAdapter = new CovidDataAdapter(this, covidDataList, favoriteFipsSet, this::saveFavorites);
+        covidDataAdapter = new CovidDataAdapter(this, covidDataList);
         covidDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         covidDataRecyclerView.setAdapter(covidDataAdapter);
 
@@ -156,21 +159,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void saveFavorites() {
-        getSharedPreferences("favorites", MODE_PRIVATE)
-                .edit()
-                .putStringSet("favorites", favoriteFipsSet)
-                .apply();
-    }
 
-    /*private void saveFavorites(){
-        SharedPreferences sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-    }*/
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("covidDataList", new ArrayList<>(covidDataList));
-    }
 }
