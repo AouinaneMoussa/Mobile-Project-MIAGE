@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-
         // Setup RecyclerView
         covidDataAdapter = new CovidDataAdapter(this, covidDataList);
         covidDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -158,6 +157,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

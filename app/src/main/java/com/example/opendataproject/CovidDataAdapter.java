@@ -64,12 +64,12 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
                 // Remove from favorites
                 editor.remove(fips);
                 holder.likeButton.setColorFilter(context.getResources().getColor(R.color.grey));
-                Toast.makeText(context, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Removed from Favorites", Toast.LENGTH_SHORT).show();
             } else {
                 // Add to favorites
                 editor.putBoolean(fips, true);
                 holder.likeButton.setColorFilter(context.getResources().getColor(R.color.purple_200));
-                Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
             }
 
             editor.apply();

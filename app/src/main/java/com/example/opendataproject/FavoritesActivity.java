@@ -1,10 +1,13 @@
 package com.example.opendataproject;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,38 +18,33 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FavoritesActivity extends AppCompatActivity {
 
-    private List<CovidData> covidDataList = new ArrayList<>(); // Déclaration de la liste
+    private Spinner provinceSpinner;
+    private RecyclerView favoritesRecyclerView;
+    private List<CovidData> covidDataList = new ArrayList<>();
+    private List<CovidData> favoriteDataList = new ArrayList<>();
+    private String selectedProvince = "All Provinces";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
 
-        RecyclerView favoritesRecyclerView = findViewById(R.id.favorites_recycler_view);
+        provinceSpinner = findViewById(R.id.province_spinner);
+        favoritesRecyclerView = findViewById(R.id.favorites_recycler_view);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Récupérer les données de l'intention ou les initialiser
+        // Récupérer les données passées depuis MainActivity
         if (getIntent().hasExtra("covidDataList")) {
             covidDataList = (List<CovidData>) getIntent().getSerializableExtra("covidDataList");
         }
 
-        // Récupérer les favoris des SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("favorites", Context.MODE_PRIVATE);
+        // Configurer le spinner
+        configureProvinceSpinner();
 
-        // Filtrer les favoris
-        List<CovidData> favoriteDataList = new ArrayList<>();
-        for (CovidData data : covidDataList) {
-            if (sharedPreferences.getBoolean(data.getFips(), false)) {
-                favoriteDataList.add(data);
-            }
-        }
-
-        // Configurer l'adaptateur
-        CovidDataAdapter adapter = new CovidDataAdapter(this, favoriteDataList);
-        favoritesRecyclerView.setAdapter(adapter);
+        // Charger les favoris pour la province sélectionnée
+        loadFavorites();
 
         // Configurer la navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -69,5 +67,49 @@ public class FavoritesActivity extends AppCompatActivity {
             return false;
         });
     }
-}
 
+    private void configureProvinceSpinner() {
+        List<String> provinces = new ArrayList<>();
+        provinces.add("All Provinces");
+        provinces.add("New York");
+        provinces.add("California");
+        provinces.add("Texas");
+        provinces.add("Florida"); // Ajouter plus de provinces si nécessaire
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, provinces);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        provinceSpinner.setAdapter(spinnerAdapter);
+
+        provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedProvince = provinces.get(position);
+                //saveSpinnerState(selectedProvince); // Sauvegarder la sélection
+                loadFavorites(); // Charger les favoris pour la nouvelle province
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Aucune action requise ici
+            }
+        });
+    }
+
+    private void loadFavorites() {
+        SharedPreferences sharedPreferences = getSharedPreferences("favorites", Context.MODE_PRIVATE);
+
+        // Filtrer les favoris selon la province sélectionnée
+        favoriteDataList.clear();
+        for (CovidData data : covidDataList) {
+            if (sharedPreferences.getBoolean(data.getFips(), false)) {
+                if (selectedProvince.equals("All Provinces") || data.getProvinceState().equals(selectedProvince)) {
+                    favoriteDataList.add(data);
+                }
+            }
+        }
+
+        // Mettre à jour l'adaptateur
+        CovidDataAdapter adapter = new CovidDataAdapter(this, favoriteDataList);
+        favoritesRecyclerView.setAdapter(adapter);
+    }
+}
