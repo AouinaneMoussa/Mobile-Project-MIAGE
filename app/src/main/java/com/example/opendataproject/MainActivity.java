@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize views
         provinceSpinner = findViewById(R.id.province_spinner);
         covidDataRecyclerView = findViewById(R.id.covid_data_recycler_view);
-        viewMapButton = findViewById(R.id.view_map_button);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);

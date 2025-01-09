@@ -24,24 +24,16 @@
         android:id="@+id/province_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/activity_title"
         android:layout_margin="16dp"
-        android:layout_below="@id/activity_title" />
+        android:minHeight="48dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favorites_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_above="@id/view_map_button"
-        android:layout_below="@id/province_spinner" />
-
-    <Button
-        android:id="@+id/view_map_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open Map"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp" />
+        android:layout_below="@id/province_spinner"
+        android:layout_above="@id/bottomNavigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
@@ -59,7 +51,5 @@
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_navigation_menu" />
-
-
 
 </RelativeLayout>

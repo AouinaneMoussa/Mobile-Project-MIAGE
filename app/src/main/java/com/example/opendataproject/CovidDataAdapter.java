@@ -54,7 +54,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
         // Set like button state
         String fips = data.getFips();
         boolean isFavorite = sharedPreferences.getBoolean(fips, false);
-        holder.likeButton.setColorFilter(isFavorite ? context.getResources().getColor(R.color.purple_200) : context.getResources().getColor(R.color.grey));
+        holder.likeButton.setColorFilter(isFavorite ? context.getResources().getColor(R.color.red) : context.getResources().getColor(R.color.grey));
 
         // Set click listener for the like button
         holder.likeButton.setOnClickListener(v -> {
@@ -68,7 +68,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
             } else {
                 // Add to favorites
                 editor.putBoolean(fips, true);
-                holder.likeButton.setColorFilter(context.getResources().getColor(R.color.purple_200));
+                holder.likeButton.setColorFilter(context.getResources().getColor(R.color.red));
                 //Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
             }
 
