@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Open Data Project</string>
+    <string name="app_name">COVID-19 USA Stats</string>
     <string name="title_activity_maps">MapsActivity</string>
 
     <string-array name="theme_colors">

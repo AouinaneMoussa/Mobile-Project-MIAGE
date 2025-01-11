@@ -77,7 +77,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
 
         // Set the image using Picasso
         Picasso.get()
-                .load("https://mlyoasgpptk8.i.optimole.com/cb:PSMF~43db5/w:auto/h:auto/q:mauto/f:avif/https://www.iris-france.org/wp-content/uploads/2021/02/Coronavirus-monde-scaled.jpg")
+                .load("https://img.freepik.com/premium-vector/coronavirus-outbreak-covid-19-design-with-falling-virus-cell-dark-background_34645-954.jpg")
                 .into(holder.iconImageView);
 
         // Item click listener to show details
@@ -91,7 +91,7 @@ public class CovidDataAdapter extends RecyclerView.Adapter<CovidDataAdapter.Covi
             intent.putExtra("deaths", data.getTotDeath());
             intent.putExtra("latitude", data.getLocation().getLat());
             intent.putExtra("longitude", data.getLocation().getLon());
-            intent.putExtra("image_url", "https://mlyoasgpptk8.i.optimole.com/cb:PSMF~43db5/w:auto/h:auto/q:mauto/f:avif/https://www.iris-france.org/wp-content/uploads/2021/02/Coronavirus-monde-scaled.jpg");
+            intent.putExtra("image_url", "https://img.freepik.com/premium-vector/coronavirus-outbreak-covid-19-design-with-falling-virus-cell-dark-background_34645-954.jpg");
             context.startActivity(intent);
         });
     }
